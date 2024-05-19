@@ -1,6 +1,6 @@
 ### Handling Dependencies  
 
-obs.:Glad folder generated on website for OpenGL 3.3
+obs.:Glad folder generated on website for OpenGL 4.6
 
 1) Installing libVorbis (building from source code)
 ```
