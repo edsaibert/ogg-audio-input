@@ -29,21 +29,32 @@ int main(int agrc, char* argc[]) {
 
     if (ogg != NULL){
         glfwInit();     // Inicializa a biblioteca GLFW
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);      // Define a versão do OpenGL(3.3)
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);      // Define a versão do OpenGL(4.7)
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);     // Define o perfil do OpenGL
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);     // Define o perfil do OpenGL (CORE)
 
+        // Cria uma janela 800x800 piexels, com o título "OggVorbis.Player()"
         GLFWwindow* window = glfwCreateWindow(800, 800, "OggVorbis.Player()", NULL, NULL);
         if (window == NULL){
             std::cout << "Failed to create GLFW window" << std::endl;
             return 0;
         }
-        glfwMakeContextCurrent(window);
-        while (!glfwWindowShouldClose(window)){
-            glfwPollEvents();
+        glfwMakeContextCurrent(window);    // Define a janela atual
+
+        gladLoadGL();    // Carrega GLAD para configurar as funções OpenGL
+
+        /* Define a área de visualização do OpenGL
+           Nesse caso, a área de visualização é x=0, y=0 até x=800, y=800 */
+        glViewport(0, 0, 800, 800);     
+
+        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);    // Define a cor de fundo
+        glClear(GL_COLOR_BUFFER_BIT);   // Limpa o buffer de cor
+        glfwSwapBuffers(window);    // Troca os buffers de cor
+
+        while (!glfwWindowShouldClose(window)){     // Enquanto a janela não for fechada
+            glfwPollEvents();    // Verifica se há eventos
         }
 
-        gladLoadGL();
 
         ov_open(ogg, &stream, NULL, 0);
         printf("Open file");
