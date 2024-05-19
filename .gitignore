@@ -1,6 +1,6 @@
 # Ignores the vorbis library
-
 libvorbis/
 
 #Ignores outputs of g++
 *.out
+*.o
