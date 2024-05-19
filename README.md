@@ -1,20 +1,21 @@
 ### Handling Dependencies  
 
+obs.:Glad folder generated on website for OpenGL 3.3
 
-Installing libVorbis
+1) Installing libVorbis (building from source code)
 ```
-cd ~
-wget git@github.com:xiph/vorbis.git
-cd vorbis
+cd libvorbis
 ./autogen.sh
 ./configure
 make
 make install
 cd ..
-rm -r vorbis/
 ```
 
-Installing OpenGL assistance packages
+2) Make sure you download the driver for your graphics card and the curresponding mesa package.
+
+3) Installing OpenGL assistance packages
 ```
 sudo pacman -S glew sdl2 sdl2_image glm freetype2
 ```
+That's it!
