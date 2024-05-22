@@ -1,24 +1,12 @@
 
-// ------------------- Natives -------------------
-#include <iostream>
-#include <stdio.h>
+// ------------------- Libs --------------------
+#include "includes.h"
 
-// ----------------- OGG Vorbis -----------------
-#include <ogg/ogg.h>
-#include <vorbis/vorbisfile.h>
-#include <vorbis/vorbisenc.h>
-
-// ------------------- OpenGL -------------------
-// #include <GL/glew.h>            // GLEW, que permite o uso de funções OpenGL
-#include "glad.h"
-#include <GL/freeglut.h>        // freeglut, que fornece funções para a criação de janelas e renderização de objetos 3D
-#include <glm/glm.hpp>          // GLM, que fornece funções matemáticas e vetoriais
-#include <GLFW/glfw3.h>         // GLFW, que permite a criação de janelas
-
-
-// #include <fstream>
+// -------------------- Own --------------------
+#include "shaders/shader.h"     // Shader, responsável pela criação de shaders
 
 using namespace std;
+
 
 int main(int agrc, char* argc[]) {
     OggVorbis_File stream;      // Arquivo que inicia a bitstream de dados
@@ -39,6 +27,7 @@ int main(int agrc, char* argc[]) {
             std::cout << "Failed to create GLFW window" << std::endl;
             return 0;
         }
+
         glfwMakeContextCurrent(window);    // Define a janela atual
 
         gladLoadGL();    // Carrega GLAD para configurar as funções OpenGL
@@ -57,7 +46,7 @@ int main(int agrc, char* argc[]) {
 
 
         ov_open(ogg, &stream, NULL, 0);
-        printf("Open file");
+        std::cout << "Audio file opened" << std::endl;
         
         
         ov_clear(&stream);
