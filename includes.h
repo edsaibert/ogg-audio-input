@@ -1,3 +1,6 @@
+#ifndef INCLUDES_H
+#define INCLUDES_H
+
 // ------------------- Natives -------------------
 #include <iostream>             // Bibliotecas padrão de entrada e saída
 
@@ -12,3 +15,5 @@
 #include <GL/freeglut.h>        // freeglut, que fornece funções para a criação de janelas e renderização de objetos 3D
 #include <glm/glm.hpp>          // GLM, que fornece funções matemáticas e vetoriais
 #include <GLFW/glfw3.h>         // GLFW, que permite a criação de janelas
+
+#endif
