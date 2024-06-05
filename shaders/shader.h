@@ -8,6 +8,6 @@
 
 GLuint compileAndAttachShaders();
 
-void initializeAndAttachObjects(GLuint& VAO, GLuint& VBO, GLfloat vertices[], size_t verticesSize);
+void initializeAndAttachObjects(GLuint& VAO, GLuint& VBO);
 
 #endif

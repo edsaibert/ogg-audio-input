@@ -3,6 +3,7 @@
 
 // ------------------- Natives -------------------
 #include <iostream>             // Bibliotecas padrão de entrada e saída
+#include <vector>               // Biblioteca de vetores
 
 // ----------------- OGG Vorbis -----------------
 #include <ogg/ogg.h>

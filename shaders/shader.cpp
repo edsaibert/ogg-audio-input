@@ -66,19 +66,15 @@ GLuint compileAndAttachShaders() {
     return shaderProgram; // Retorna o programa do shader
 }
 
-/*  Função que inicializa os objectos VAO e VBO e os liga ao programa dos Shaders   */
-void initializeAndAttachObjects(GLuint& VAO, GLuint& VBO, GLfloat vertices[], size_t verticesSize) {
-    glGenVertexArrays(1, &VAO);     // Gera um array de vértices
-    glGenBuffers(1, &VBO);          // Gera um buffer de vértices
+/*  Função que inicializa os objectos VAO e VBO   */
+void initializeAndAttachObjects(GLuint& VAO, GLuint& VBO) {
+    glGenVertexArrays(1, &VAO); // Gera um array 
+    glGenBuffers(1, &VBO); //  Gera um buffer
 
-    glBindVertexArray(VAO);         // Faz com que VAO seja o array vertex atual
+    glBindVertexArray(VAO); // Faz com que VAO seja o array vertex atual
     glBindBuffer(GL_ARRAY_BUFFER, VBO); // Faz com que VBO seja o buffer atual
-
-    glBufferData(GL_ARRAY_BUFFER, verticesSize, vertices, GL_STATIC_DRAW); // Coloca os vértices no buffer
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0); // Define os atributos do vértice
-    glEnableVertexAttribArray(0); // Habilita o atributo do vértice
-
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (void*)0); // Define as propriedades do buffer
+    glEnableVertexAttribArray(0); // Habilita o buffer 
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Desconecta o buffer
     glBindVertexArray(0); // Desconecta o array
 }
