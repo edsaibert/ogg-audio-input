@@ -1,5 +1,5 @@
 # Ignores the vorbis library
-libvorbis/
+lib/
 
 #Ignores outputs of g++
 *.out

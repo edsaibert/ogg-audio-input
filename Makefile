@@ -20,6 +20,18 @@ TARGET = main
 cpp_files = main.cpp $(SHADERS)/*.cpp
 objects = $(cpp_files:.cpp=.o) glad.o
 
+install:
+	mkdir -p lib
+
+	@echo "Downloading PortAudio lib"
+	curl https://files.portaudio.com/archives/pa_stable_v190700_20210406.tgz | tar -xz -C lib
+
+	@echo "Building PortAudio lib"
+	cd lib/portaudio && ./configure && $(MAKE) -j
+
+.PHONY: install
+
+
 all: $(TARGET)
 
 $(TARGET): $(objects) 
