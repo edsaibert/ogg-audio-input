@@ -3,6 +3,7 @@
 
 // -------------------- Own --------------------
 #include "shaders/shader.h"     // Shader, responsável pela criação de shaders
+#include "audio/audio.h"        // Audio, responsável pela captura e reprodução de áudio
 
 using namespace std;
 const size_t bufferSize = 4096;
@@ -52,6 +53,9 @@ int main(int argc, char* argv[]) {
     ogg = fopen("audio.ogg", "r+");
 
     if (ogg != NULL) {
+        portAudioInicialize();  // Inicializa o PortAudio
+        getDevices();           // Mostra os dispositivos de áudio disponíveis
+
         glfwInit();     // Inicializa a biblioteca GLFW
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);      // Define a versão do OpenGL(4.6)
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -114,6 +118,8 @@ int main(int argc, char* argv[]) {
         ov_clear(&stream);
         glfwDestroyWindow(window);
         glfwTerminate();
+
+        portAudioTerminate();   // Finaliza o PortAudio
     } else {
         std::cout << "Failed to open audio file" << std::endl;
         return 0;

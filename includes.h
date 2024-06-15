@@ -4,11 +4,15 @@
 // ------------------- Natives -------------------
 #include <iostream>             // Bibliotecas padrão de entrada e saída
 #include <vector>               // Biblioteca de vetores
+#include <cstring>             // Biblioteca de strings
 
 // ----------------- OGG Vorbis -----------------
 #include <ogg/ogg.h>
 #include <vorbis/vorbisfile.h>
 #include <vorbis/vorbisenc.h>
+
+// ------------------ PortAudio -----------------
+#include <portaudio.h>          // PortAudio, que permite a captura e reprodução de áudio
 
 // ------------------- OpenGL -------------------
 // #include <GL/glew.h>            // GLEW, que permite o uso de funções OpenGL
