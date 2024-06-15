@@ -1,7 +1,12 @@
+portAudio_inc = ./lib/portaudio/include
+portAudio_dep = -lrt -lasound -ljack -pthread 
+portAudio_lib = ./lib/portaudio/lib/.libs/libportaudio.a
+
 CC = gcc
-INCLUDES = -I$(glfw_inc) 
-LIBRARIES = -L$(glfw_lib) 
+INCLUDES = -I$(portAudio_inc)
+LIBRARIES = -L$(glfw_lib) $(portAudio_lib)
 SHADERS = ./shaders
+AUDIO = ./audio
 
 glfw = d:/external/glfw-3.1
 glfw_inc = $(glfw)/include
@@ -14,10 +19,10 @@ glfw_lib = $(glfw)/lib64
 
 
 CFLAGS = -Wall -g $(INCLUDES)
-LDFLAGS = $(LIBRARIES) -lglfw -lglm -lglut -lstdc++  -lvorbisfile -L /usr/lib -lGL 
+LDFLAGS = $(LIBRARIES) -lglfw -lglm -lglut -lstdc++  -lvorbisfile -L /usr/lib -lGL $(portAudio_dep) -lportaudio
 
 TARGET = main
-cpp_files = main.cpp $(SHADERS)/*.cpp
+cpp_files = main.cpp $(SHADERS)/shader.cpp $(AUDIO)/audio.cpp
 objects = $(cpp_files:.cpp=.o) glad.o
 
 install:
@@ -35,7 +40,7 @@ install:
 all: $(TARGET)
 
 $(TARGET): $(objects) 
-        $(CC) -o $@ $^ $(LDFLAGS)
+        $(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 .PHONY : clean
 clean:
