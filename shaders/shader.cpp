@@ -5,14 +5,14 @@
 #include "shader.h"
 
 /*  Código fonte dos shaders    */
-const char *vertexShaderSource = "#version 460 core\n"
+const char *vertexShaderSourceOld = "#version 460 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
     "}\0";
 
-const char *fragmentShaderSource = "#version 460 core\n"
+const char *fragmentShaderSourceOld = "#version 460 core\n"
     "out vec4 FragColor;\n"
     "void main()\n"
     "{\n"
@@ -25,8 +25,8 @@ GLuint compileAndAttachShaders() {
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER); // Cria um objeto -> fragment shader
 
     // Conecta o caminho dos shaders para seus objetos
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL); 
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexShaderSourceOld, NULL); 
+    glShaderSource(fragmentShader, 1, &fragmentShaderSourceOld, NULL);
 
     // Compila os shaders
     glCompileShader(vertexShader); 

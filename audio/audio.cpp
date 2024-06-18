@@ -32,6 +32,8 @@ static int paTestCallback(
         vol_r += max(vol_r, paAbs(in[i * 2 + 1]));
     }
 
+    // to-do: link this with openGL
+
     return 0;
 }
 

@@ -7,6 +7,7 @@ INCLUDES = -I$(portAudio_inc)
 LIBRARIES = -L$(glfw_lib) $(portAudio_lib)
 SHADERS = ./shaders
 AUDIO = ./audio
+OPENGL = ./opengl
 
 glfw = d:/external/glfw-3.1
 glfw_inc = $(glfw)/include
@@ -22,7 +23,7 @@ CFLAGS = -Wall -g $(INCLUDES)
 LDFLAGS = $(LIBRARIES) -lglfw -lglm -lglut -lstdc++  -lvorbisfile -L /usr/lib -lGL $(portAudio_dep) -lportaudio
 
 TARGET = main
-cpp_files = main.cpp $(SHADERS)/shader.cpp $(AUDIO)/audio.cpp
+cpp_files = main.cpp $(OPENGL)/opengl.cpp
 objects = $(cpp_files:.cpp=.o) glad.o
 
 install:
