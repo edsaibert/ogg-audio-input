@@ -6,16 +6,22 @@
 
 #include "../includes.h"
 
-void portAudioInicialize();
+class pa{
+public:
+    void portAudioInicialize();
 
-void portAudioTerminate();
+    void portAudioTerminate();
 
-void getDevices();
+    void getDevices();
 
-void readMicrophoneInput();
+    void readMicrophoneInput();
 
-void encodeAudio();
+    void encodeAudio();
 
-void FFT();
+    void FFT();
+
+private:
+    void checkError(PaError err);
+};
 
 #endif

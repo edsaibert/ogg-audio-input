@@ -23,7 +23,7 @@ CFLAGS = -Wall -g $(INCLUDES)
 LDFLAGS = $(LIBRARIES) -lglfw -lglm -lglut -lstdc++  -lvorbisfile -L /usr/lib -lGL $(portAudio_dep) -lportaudio
 
 TARGET = main
-cpp_files = main.cpp $(OPENGL)/opengl.cpp
+cpp_files = main.cpp $(OPENGL)/opengl.cpp $(AUDIO)/audio.cpp
 objects = $(cpp_files:.cpp=.o) glad.o
 
 install:

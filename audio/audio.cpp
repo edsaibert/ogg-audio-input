@@ -37,28 +37,28 @@ static int paTestCallback(
     return 0;
 }
 
-static void checkError(PaError err) {
+void pa::checkError(PaError err) {
     if (err != paNoError) {
         std::cout << "PortAudio error: " << Pa_GetErrorText(err) << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
-void portAudioInicialize() {
+void pa::portAudioInicialize() {
     PaError err;
     err = Pa_Initialize();
 
     checkError(err);
 }
 
-void portAudioTerminate() {
+void pa::portAudioTerminate() {
     PaError err;
     err = Pa_Terminate();
 
     checkError(err);
 }
 
-void getDevices() {
+void pa::getDevices() {
     int numDevices = Pa_GetDeviceCount();
     std::cout << "Number of devices found: " << numDevices << std::endl;
 
@@ -115,8 +115,6 @@ void getDevices() {
 
     err = Pa_StartStream(stream);
     checkError(err);
-
-    Pa_Sleep(10* 1000); // Sleep for 10 seconds
 
     err = Pa_StopStream(stream);
     checkError(err);
