@@ -27,7 +27,7 @@ static int paTestCallback(
     // 512 samples per channel
     for (unsigned long i = 0; i < framesPerBuffer; i++){
         audio->audioBufferLeft[i] = in[i * 2];
-        audio->audioBufferRight[i] = in[i * 2 + 1];
+        audio->audioBufferRight[i] = in[(i * 2) + 1];
         // audio->audioBuffer
         // vol_l += max(vol_l, paAbs(in[i * 2]));
         // vol_r += max(vol_r, paAbs(in[i * 2 + 1]));

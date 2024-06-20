@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     while (!glfwWindowShouldClose(window)){       // Enquanto a janela não for fechada e não for fim de arquivo
         glfwSwapBuffers(window); // Troca os buffers de cor
 
-        gl.setVertices(pa.getAudioBufferLeft()); // Define os vértices
+        gl.setVertices(pa.getAudioBufferRight());
         gl.draw(); // Desenha os vértices
 
         glfwPollEvents();                         // Verifica se há eventos

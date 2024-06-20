@@ -26,8 +26,12 @@ int gl::checkGLError() {
 }
 
 gl::gl(size_t bufferSize) : bufferSize(bufferSize) {
-    vertices = new GLfloat[bufferSize];
-    verticesSize = bufferSize;
+    /*
+        O vetor de vértices necessita ter um tamanho duplicado do buffer de áudio.
+        Isso ocorre pois cada vértice é composto por duas coordenadas (x, y). 
+    */
+    verticesSize = bufferSize * 2;
+    vertices = new GLfloat[verticesSize];
 }
 
 
@@ -49,7 +53,7 @@ int gl::inicializeGL(){
 void gl::setVertices(std::vector<float> audioBuffer){
     std::cout << "Setting vertices" << std::endl;
 
-    if(audioBuffer.size() != verticesSize) {
+    if(audioBuffer.size() * 2 != verticesSize) {
         // Handle size mismatch
         std::cout << "Size mismatch between audio buffer and vertex data" << std::endl;
         return;
@@ -57,12 +61,11 @@ void gl::setVertices(std::vector<float> audioBuffer){
 
     // // Normalize the audio data and apply it to the vertex data
     for (size_t i = 0; i < audioBuffer.size(); i++) {
-    //     // Normalize the sample to the range -1.0 to 1.0
         float normalizedSample = audioBuffer[i];
-
-    //     // Apply the normalized sample to the vertex data
-        vertices[i] = normalizedSample;
-        std::cout << "Vertex: " << vertices[i] << std::endl;
+        
+        vertices[i * 2] = ((float)i / audioBuffer.size()) * 4 - 1;  // Necessário que a coordenada x corresponda com o tamanho da janela (-1 a 1)
+        vertices[(i * 2) + 1] = normalizedSample / 1.5;             // Apenas para visualização do efeito aliasing 
+        std::cout << "Vertex: " << vertices[i*2+1] << std::endl;
     }
 }
 
