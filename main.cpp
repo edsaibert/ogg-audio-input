@@ -15,11 +15,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 };
 
 int main(int argc, char* argv[]) {
-    gl gl; // Cria um objeto da classe OpenGL
-    pa pa;
+    gl gl(FRAMES_PER_BUFFER); // Cria um objeto da classe OpenGL
+    pa pa(FRAMES_PER_BUFFER); // Cria um objeto da classe PortAudio e define o tamanho do buffer de áudio
 
     pa.portAudioInicialize();  // Inicializa o PortAudio
     pa.getDevices();           // Mostra os dispositivos de áudio disponíveis
+    pa.openStream();           // Abre o stream de áudio
+    pa.startStream();          // Inicia o stream de áudio
 
     glfwInit();                                    // Inicializa a biblioteca GLFW
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); // Define a versão do OpenGL(4.6)
@@ -51,6 +53,7 @@ int main(int argc, char* argv[]) {
     while (!glfwWindowShouldClose(window)){       // Enquanto a janela não for fechada e não for fim de arquivo
         glfwSwapBuffers(window); // Troca os buffers de cor
 
+        gl.setVertices(pa.getAudioBufferLeft()); // Define os vértices
         gl.draw(); // Desenha os vértices
 
         glfwPollEvents();                         // Verifica se há eventos
@@ -58,13 +61,14 @@ int main(int argc, char* argv[]) {
         // readStatus = readAudioChunk(ogg, &stream, vertices, verticesSize); // Read next chunk
     }
 
-    // Deleta os objetos criados e finaliza o GLFW
-    gl.destroyGL();
+    pa.stopStream(); // Para o stream de áudio
+    gl.destroyGL(); // Deleta os objetos criados
 
     // ov_clear(&stream);
     glfwDestroyWindow(window);
     glfwTerminate();
 
+    pa.closeStream();           // Fecha o stream de áudio
     pa.portAudioTerminate();   // Finaliza o PortAudio
     return 1;
 }

@@ -25,6 +25,11 @@ int gl::checkGLError() {
     return EXIT_SUCCESS;
 }
 
+gl::gl(size_t bufferSize) : bufferSize(bufferSize) {
+    vertices = new GLfloat[bufferSize];
+    verticesSize = bufferSize;
+}
+
 
 int gl::inicializeGL(){
 
@@ -41,7 +46,26 @@ int gl::inicializeGL(){
     inicializeObjects(); // Inicializa e conecta os objetos criados
 }
 
-void gl::setVertices(){} // to-do
+void gl::setVertices(std::vector<float> audioBuffer){
+    std::cout << "Setting vertices" << std::endl;
+
+    if(audioBuffer.size() != verticesSize) {
+        // Handle size mismatch
+        std::cout << "Size mismatch between audio buffer and vertex data" << std::endl;
+        return;
+    }
+
+    // // Normalize the audio data and apply it to the vertex data
+    for (size_t i = 0; i < audioBuffer.size(); i++) {
+    //     // Normalize the sample to the range -1.0 to 1.0
+        float normalizedSample = audioBuffer[i];
+
+    //     // Apply the normalized sample to the vertex data
+        vertices[i] = normalizedSample;
+        std::cout << "Vertex: " << vertices[i] << std::endl;
+    }
+}
+
 
 GLfloat* gl::getVertices(){ 
     return vertices;
@@ -57,7 +81,7 @@ void gl::draw(){
 
     glUseProgram(shaderProgram);                // Usa o programa de shader
     glBindVertexArray(VAO);                     // Faz com que VAO seja o array vertex atual
-    glDrawArrays(GL_LINE_STRIP, 0, bufferSize); 
+    glDrawArrays(GL_LINE_STRIP, 0, bufferSize / 2); // Desenha os vértices
 }
 
 int gl::compileShaders() {

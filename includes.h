@@ -21,4 +21,7 @@
 #include <glm/glm.hpp>          // GLM, que fornece funções matemáticas e vetoriais
 #include <GLFW/glfw3.h>         // GLFW, que permite a criação de janelas
 
+#define SAMPLE_RATE 48000       //  taxa de amostragem
+#define FRAMES_PER_BUFFER 1024  // tamanho do buffer de áudio
+
 #endif

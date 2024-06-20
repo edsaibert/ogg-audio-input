@@ -6,14 +6,17 @@
 */
 
 #include "../includes.h"
+#include "../audio/audio.h"
 
 class gl {
 public:
-    const size_t bufferSize = 4096;
-    const size_t samplesPerChannel = 4096;
+    const size_t samplesPerChannel = SAMPLE_RATE; // Número de amostras por canal
 
-    GLfloat* vertices = new GLfloat[bufferSize * 2];
-    size_t verticesSize = bufferSize * 2;
+    GLfloat *vertices;   // Array de vértices, que será desenhado na tela
+    size_t verticesSize; // Tamanho do array de vértices
+    size_t bufferSize;   // Tamanho do buffer de vértices
+
+    gl(size_t bufferSize); // Construtor
 
     GLuint VAO, VBO, shaderProgram;
 
@@ -21,7 +24,7 @@ public:
 
     GLfloat* getVertices(); // Retorna o array de vértices
 
-    void setVertices(); // Define os vértices
+    void setVertices(std::vector<float> audioBuffer); // Define os vértices
 
     void draw(); // Desenha os vértices
 

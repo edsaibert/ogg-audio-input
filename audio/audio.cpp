@@ -19,22 +19,21 @@ static int paTestCallback(
     float* in = (float*)inputBuffer;
     (void) outputBuffer;
 
-    int dispSize = 100;
-    printf("\r");
+    pa* audio = (pa*)userData;
 
-    fflush(stdout);
-    float vol_l = 0;
-    float vol_r = 0;
+    // float vol_l = 0;
+    // float vol_r = 0;
 
     // 512 samples per channel
     for (unsigned long i = 0; i < framesPerBuffer; i++){
-        vol_l += max(vol_l, paAbs(in[i * 2]));
-        vol_r += max(vol_r, paAbs(in[i * 2 + 1]));
+        audio->audioBufferLeft[i] = in[i * 2];
+        audio->audioBufferRight[i] = in[i * 2 + 1];
+        // audio->audioBuffer
+        // vol_l += max(vol_l, paAbs(in[i * 2]));
+        // vol_r += max(vol_r, paAbs(in[i * 2 + 1]));
     }
 
-    // to-do: link this with openGL
-
-    return 0;
+    return paContinue;
 }
 
 void pa::checkError(PaError err) {
@@ -42,6 +41,11 @@ void pa::checkError(PaError err) {
         std::cout << "PortAudio error: " << Pa_GetErrorText(err) << std::endl;
         exit(EXIT_FAILURE);
     }
+}
+
+// Constructor
+pa::pa(size_t bufferSize) : audioBufferLeft(bufferSize, 0.0f) , audioBufferRight(bufferSize, 0.0f){
+
 }
 
 void pa::portAudioInicialize() {
@@ -58,8 +62,40 @@ void pa::portAudioTerminate() {
     checkError(err);
 }
 
+void pa::openStream(){
+    // print de input e output parameters
+    PaError err = Pa_OpenStream(
+        &stream,
+        &inputParameters,
+        &outputParameters,
+        SAMPLE_RATE,
+        FRAMES_PER_BUFFER,
+        paNoFlag,
+        paTestCallback,
+        this);
+    checkError(err);
+}
+
+void pa::startStream(){
+    PaError err;
+    err = Pa_StartStream(stream);
+    checkError(err);
+}
+
+void pa::stopStream(){
+    PaError err;
+    err = Pa_StopStream(stream);
+    checkError(err);
+}
+
+void pa::closeStream(){
+    PaError err;
+    err = Pa_CloseStream(stream);
+    checkError(err);
+}
+
 void pa::getDevices() {
-    int numDevices = Pa_GetDeviceCount();
+    numDevices = Pa_GetDeviceCount();
     std::cout << "Number of devices found: " << numDevices << std::endl;
 
     if (numDevices < 0){
@@ -70,7 +106,6 @@ void pa::getDevices() {
         exit(EXIT_SUCCESS);
     } 
     
-    const PaDeviceInfo* deviceInfo;
     for (int i = 0; i < numDevices; i++){
         deviceInfo = Pa_GetDeviceInfo(i);
         std::cout << "Device " << i << ": " << deviceInfo->name << std::endl;
@@ -80,10 +115,7 @@ void pa::getDevices() {
         std::cout << "  Default Sample Rate: " << deviceInfo->defaultSampleRate << std::endl;
     }
 
-    int device = 7;     // to-do: choose a device
-
-    PaStreamParameters inputParameters;
-    PaStreamParameters outputParameters;
+    int device = 1;     // to-do: choose a device
 
     // Set input and output parameters of the chosen device
     memset(&inputParameters, 0, sizeof(inputParameters));
@@ -99,27 +131,12 @@ void pa::getDevices() {
     outputParameters.hostApiSpecificStreamInfo = NULL; 
     outputParameters.sampleFormat = paFloat32; // 32-bit floating point (change if needed)
     outputParameters.suggestedLatency = Pa_GetDeviceInfo(device)->defaultLowInputLatency;
+}
 
-    PaStream* stream;
-    PaError err = Pa_OpenStream(
-        &stream,
-        &inputParameters,
-        &outputParameters,
-        SAMPLE_RATE,
-        FRAMES_PER_BUFFER,
-        paNoFlag,
-        paTestCallback,
-        NULL
-    );
-    checkError(err);
+std::vector<float> pa::getAudioBufferLeft(){
+    return audioBufferLeft;
+}
 
-    err = Pa_StartStream(stream);
-    checkError(err);
-
-    err = Pa_StopStream(stream);
-    checkError(err);
-
-    err = Pa_CloseStream(stream);
-    checkError(err);
-
+std::vector<float> pa::getAudioBufferRight(){
+    return audioBufferRight;
 }
