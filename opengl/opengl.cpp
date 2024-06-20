@@ -25,6 +25,9 @@ int gl::checkGLError() {
     return EXIT_SUCCESS;
 }
 
+/*
+    Construtor da classe OpenGL
+*/
 gl::gl(size_t bufferSize) : bufferSize(bufferSize) {
     /*
         O vetor de vértices necessita ter um tamanho duplicado do buffer de áudio.
@@ -34,38 +37,20 @@ gl::gl(size_t bufferSize) : bufferSize(bufferSize) {
     vertices = new GLfloat[verticesSize];
 }
 
-
-int gl::inicializeGL(){
-
-    /* Define a área de visualização do OpenGL
-       Nesse caso, a área de visualização é x=0, y=0 até x=800, y=800 */
-    glViewport(0, 0, 800, 800);
-
-    compileShaders();
-
-    if (shaderProgram == 0) {
-        return EXIT_FAILURE;
-    }
-
-    inicializeObjects(); // Inicializa e conecta os objetos criados
-}
-
+/*
+    Função que define os vértices a serem desenhados na tela
+    O parâmetro é um vetor de floats, que contém o buffer de áudio
+*/
 void gl::setVertices(std::vector<float> audioBuffer){
-    std::cout << "Setting vertices" << std::endl;
-
+    // Caso o tamanho do buffer de áudio seja diferente do tamanho do vetor de vértices
     if(audioBuffer.size() * 2 != verticesSize) {
-        // Handle size mismatch
         std::cout << "Size mismatch between audio buffer and vertex data" << std::endl;
         return;
     }
 
-    // // Normalize the audio data and apply it to the vertex data
     for (size_t i = 0; i < audioBuffer.size(); i++) {
-        float normalizedSample = audioBuffer[i];
-        
         vertices[i * 2] = ((float)i / audioBuffer.size()) * 4 - 1;  // Necessário que a coordenada x corresponda com o tamanho da janela (-1 a 1)
-        vertices[(i * 2) + 1] = normalizedSample / 1.5;             // Apenas para visualização do efeito aliasing 
-        std::cout << "Vertex: " << vertices[i*2+1] << std::endl;
+        vertices[(i * 2) + 1] = audioBuffer[i] / 1.5;               // Apenas para visualização do efeito aliasing
     }
 }
 
@@ -74,6 +59,10 @@ GLfloat* gl::getVertices(){
     return vertices;
 }
 
+/*
+    Função que desenha os vértices na tela
+    e atualiza o buffer de vértices
+*/
 void gl::draw(){
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f); // Define a cor de fundo
 
@@ -87,6 +76,9 @@ void gl::draw(){
     glDrawArrays(GL_LINE_STRIP, 0, bufferSize / 2); // Desenha os vértices
 }
 
+/*
+    Função que compila os shaders
+*/
 int gl::compileShaders() {
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);     // Cria um objeto -> vertex shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER); // Cria um objeto -> fragment shader
@@ -136,6 +128,10 @@ int gl::compileShaders() {
     return EXIT_SUCCESS; // Retorna o programa do shader
 }
 
+
+/*
+    Função que inicializa os objectos VAO e VBO
+*/
 void gl::inicializeObjects() {
     /*  Função que inicializa os objectos VAO e VBO   */
     glGenVertexArrays(1, &VAO); // Gera um array
@@ -149,6 +145,9 @@ void gl::inicializeObjects() {
     glBindVertexArray(0);                                                            // Desconecta o array
 }
 
+/*
+    Função que destrói os objetos criados
+*/
 void gl::destroyGL(){
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);

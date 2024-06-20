@@ -20,8 +20,6 @@ public:
 
     GLuint VAO, VBO, shaderProgram;
 
-    int inicializeGL(); // Inicializa o OpenGL
-
     GLfloat* getVertices(); // Retorna o array de vértices
 
     void setVertices(std::vector<float> audioBuffer); // Define os vértices

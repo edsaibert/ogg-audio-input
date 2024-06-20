@@ -22,6 +22,6 @@
 #include <GLFW/glfw3.h>         // GLFW, que permite a criação de janelas
 
 #define SAMPLE_RATE 44100       //  taxa de amostragem
-#define FRAMES_PER_BUFFER 2048  // tamanho do buffer de áudio
+#define FRAMES_PER_BUFFER 2048  // tamanho dos buffers de áudio e arestas
 
 #endif
