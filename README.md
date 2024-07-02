@@ -16,6 +16,7 @@ cd ..
 
 3) Installing OpenGL assistance packages
 ```
-sudo pacman -S glew sdl2 sdl2_image glm freetype2
+sudo pacman -S glew glfw sdl2 sdl2_image glm freetype2
+yay -S freeglut
 ```
 That's it!
