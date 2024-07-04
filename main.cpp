@@ -53,7 +53,11 @@ int main(int argc, char* argv[]) {
     while (!glfwWindowShouldClose(window)){       // Enquanto a janela não for fechada e não for fim de arquivo
         glfwSwapBuffers(window); // Troca os buffers de cor
 
-        gl.setVertices(pa.getAudioBufferRight());
+        std::vector<std::complex<float>> audioBufferLeft = pa.getAudioBufferLeft(); // Obtém o buffer de áudio do canal esquerdo
+        pa.FFT(audioBufferLeft, false); // Aplica a transformada rápida de Fourier
+        // pa.normalizeFFT(audioBufferLeft); // Normaliza a transformada rápida de Fourier
+
+        gl.setVertices(audioBufferLeft);
         gl.draw(); // Desenha os vértices
 
         glfwPollEvents();                         // Verifica se há eventos

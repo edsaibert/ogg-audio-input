@@ -41,16 +41,29 @@ gl::gl(size_t bufferSize) : bufferSize(bufferSize) {
     Função que define os vértices a serem desenhados na tela
     O parâmetro é um vetor de floats, que contém o buffer de áudio
 */
-void gl::setVertices(std::vector<float> audioBuffer){
+void gl::setVertices(std::vector<gl::complex> audioBuffer){
     // Caso o tamanho do buffer de áudio seja diferente do tamanho do vetor de vértices
-    if(audioBuffer.size() * 2 != verticesSize) {
-        std::cout << "Size mismatch between audio buffer and vertex data" << std::endl;
-        return;
+    // if(audioBuffer.size() * 2 != verticesSize) {
+    //     std::cout << "Size mismatch between audio buffer and vertex data" << std::endl;
+    //     return;
+
+    float maxMagnitude = 0.0;
+
+    /* 
+        Encontra a amplitude máxima conforme a fórmula |a + bi| = sqrt(a^2 + b^2)
+        onde a é a parte real e b é a parte imaginária
+    */
+    for (const auto& c : audioBuffer) {
+        float magnitude = std::abs(c);
+        if (magnitude > maxMagnitude) {
+            maxMagnitude = magnitude;
+        }
     }
 
-    for (size_t i = 0; i < audioBuffer.size(); i++) {
-        vertices[i * 2] = ((float)i / audioBuffer.size()) * 4 - 1;  // Necessário que a coordenada x corresponda com o tamanho da janela (-1 a 1)
-        vertices[(i * 2) + 1] = audioBuffer[i] / 1.5;               // Apenas para visualização do efeito aliasing
+    for (size_t i = 0; i < audioBuffer.size(); i++){
+        vertices[i*2] = ((float) i / audioBuffer.size()) * 4 - 1 ; // Necessário que a coordenada x corresponda com o tamanho da janela (-1 a 1)
+        vertices[(i*2)+1] = (std::abs(audioBuffer[i]) / maxMagnitude) - 0.5f; // Normaliza a amplitude para o intervalo [0, 1]
+
     }
 }
 

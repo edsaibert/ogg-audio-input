@@ -20,7 +20,7 @@ glfw_lib = $(glfw)/lib64
 
 
 CFLAGS = -Wall -g $(INCLUDES)
-LDFLAGS = $(LIBRARIES) -lglfw -lglm -lglut -lstdc++  -lvorbisfile -L /usr/lib -lGL $(portAudio_dep) -lportaudio
+LDFLAGS = $(LIBRARIES) -lglfw -lglm -lm -lglut -lstdc++  -lvorbisfile -L /usr/lib -lGL $(portAudio_dep) -lportaudio
 
 TARGET = main
 cpp_files = main.cpp $(OPENGL)/opengl.cpp $(AUDIO)/audio.cpp
