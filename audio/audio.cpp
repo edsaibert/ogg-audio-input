@@ -133,11 +133,11 @@ void pa::getDevices() {
     outputParameters.suggestedLatency = Pa_GetDeviceInfo(device)->defaultLowInputLatency;
 }
 
-std::vector<float> pa::getAudioBufferLeft(){
+std::vector<pa::complex> pa::getAudioBufferLeft(){
     return audioBufferLeft;
 }
 
-std::vector<float> pa::getAudioBufferRight(){
+std::vector<pa::complex> pa::getAudioBufferRight(){
     return audioBufferRight;
 }
 
@@ -148,4 +148,50 @@ float pa::calculateCoefficients() {
     return dt / (RC + dt);
 }
 
-void pa::lowpassFilter(){}
+void pa::lowpassFilter(){}  // to-do
+
+void pa::FFT(std::vector<complex> &v, bool invert){
+    int n = v.size();
+    if (n <= 1) return;
+
+    std::vector<complex> even(n / 2), odd(n / 2); // divide a recursão em duas metades (com valores pares e ímpares de índice)
+    for (int i = 0; 2*i < n; i++){
+        even[i] = v[2*i];
+        odd[i] = v[2*i + 1];
+    }
+
+    FFT(even, invert);
+    FFT(odd, invert);
+    
+    double theta = 2 * pi / n * (invert ? -1 : 1);  // define o ângulo de rotação (invert troca a direção da rotação)
+    complex w(1), wn(cos(theta), sin(theta));       // define os vetores de rotação
+
+    // combina os resultados das subtransformadas
+    for (int i = 0; 2 * i < n; i++){
+        v[i] = even[i] + w * odd[i];
+        v[i + n/2] = even[i] - w * odd[i];
+        if (invert) {
+            v[i] /= 2;
+            v[i + n/2] /= 2;
+        }
+        w *= wn;
+    }
+}
+
+void pa::normalizeFFT(std::vector<complex>& fftData) {
+    // Find maximum magnitude
+    float maxMagnitude = 0.0;
+    for (size_t i = 0; i < fftData.size(); ++i) {
+        float magnitude = std::abs(fftData[i]);
+        if (magnitude > maxMagnitude) {
+            maxMagnitude = magnitude;
+        }
+    }
+
+    // Normalize amplitudes to range [0, 1]
+    if (maxMagnitude > 0.0) {
+        for (size_t i = 0; i < fftData.size(); ++i) {
+            fftData[i] = (fftData[i] / maxMagnitude) * 10.0f;
+        }
+    }
+}

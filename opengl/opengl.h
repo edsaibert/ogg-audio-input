@@ -10,6 +10,7 @@
 
 class gl {
 public:
+    using complex = std::complex<float>; // definição de tipo para números complexos
     const size_t samplesPerChannel = SAMPLE_RATE; // Número de amostras por canal
 
     GLfloat *vertices;   // Array de vértices, que será desenhado na tela
@@ -22,7 +23,7 @@ public:
 
     GLfloat* getVertices(); // Retorna o array de vértices
 
-    void setVertices(std::vector<float> audioBuffer); // Define os vértices
+    void setVertices(std::vector<complex> audioBuffer); // Define os vértices
 
     void draw(); // Desenha os vértices
 

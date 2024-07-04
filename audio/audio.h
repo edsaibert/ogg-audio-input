@@ -9,8 +9,8 @@ public:
     using complex = std::complex<float>; // definição de tipo para números complexos
     const double pi = acos(-1);          // pi
 
-    std::vector<float> audioBufferLeft;  // buffer de áudio para o canal esquerdo
-    std::vector<float> audioBufferRight; // buffer de áudio para o canal direito
+    std::vector<complex> audioBufferLeft;  // buffer de áudio para o canal esquerdo
+    std::vector<complex> audioBufferRight; // buffer de áudio para o canal direito
 
     pa(size_t bufferSize); // construtor
 
@@ -24,13 +24,14 @@ public:
 
     void getDevices(); // obtém os dispositivos de áudio
 
-    std::vector<float> getAudioBufferLeft();  // obtém o buffer de áudio do canal esquerdo
-    std::vector<float> getAudioBufferRight(); // obtém o buffer de áudio do canal direito
+    std::vector<complex> getAudioBufferLeft();  // obtém o buffer de áudio do canal esquerdo
+    std::vector<complex> getAudioBufferRight(); // obtém o buffer de áudio do canal direito
 
     float calculateCoefficients(); // calcula os coeficientes do filtro
     void lowpassFilter();          // aplica o lowpass filter
 
-    void FFT(); // aplica a transformada rápida de Fourier
+    void FFT(std::vector<complex> &v, bool invert); // aplica a transformada rápida de Fourier
+    void normalizeFFT(std::vector<complex> &fftData); // normaliza a transformada rápida de Fourier
 
 private:
     int numDevices;
