@@ -3,43 +3,45 @@
 
 #include "../includes.h"
 
-class pa{
+class pa
+{
 public:
-    std::vector<float> audioBufferLeft;
-    std::vector<float> audioBufferRight;
+    using complex = std::complex<float>; // definição de tipo para números complexos
+    const double pi = acos(-1);          // pi
 
-    pa(size_t bufferSize);
+    std::vector<float> audioBufferLeft;  // buffer de áudio para o canal esquerdo
+    std::vector<float> audioBufferRight; // buffer de áudio para o canal direito
 
-    void portAudioInicialize();
+    pa(size_t bufferSize); // construtor
 
-    void portAudioTerminate();
+    void portAudioInicialize(); // inicializa o PortAudio
+    void portAudioTerminate();  // termina o PortAudio
 
-    void openStream();
+    void openStream();  // abre o stream de áudio
+    void startStream(); // inicia o stream de áudio
+    void stopStream();  // para o stream de áudio
+    void closeStream(); // fecha o stream de áudio
 
-    void startStream();
+    void getDevices(); // obtém os dispositivos de áudio
 
-    void stopStream();
+    std::vector<float> getAudioBufferLeft();  // obtém o buffer de áudio do canal esquerdo
+    std::vector<float> getAudioBufferRight(); // obtém o buffer de áudio do canal direito
 
-    void closeStream();
+    float calculateCoefficients(); // calcula os coeficientes do filtro
+    void lowpassFilter();          // aplica o lowpass filter
 
-    void getDevices();
-
-    std::vector<float> getAudioBufferLeft();
-
-    std::vector<float> getAudioBufferRight();
-
-    void encodeAudio();
-
-    void FFT();
+    void FFT(); // aplica a transformada rápida de Fourier
 
 private:
     int numDevices;
-    const PaDeviceInfo* deviceInfo;
+    const PaDeviceInfo *deviceInfo;
     PaStreamParameters inputParameters;
     PaStreamParameters outputParameters;
     PaDeviceIndex inputDevice;
     PaDeviceIndex outputDevice;
-    PaStream* stream;
+    PaStream *stream;
+
+    float cutoff = 1000.0f; // to-do
 
     void checkError(PaError err);
 };

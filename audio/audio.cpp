@@ -115,7 +115,7 @@ void pa::getDevices() {
         std::cout << "  Default Sample Rate: " << deviceInfo->defaultSampleRate << std::endl;
     }
 
-    int device = 1;     // to-do: choose a device
+    int device = 7;     // to-do: choose a device
 
     // Set input and output parameters of the chosen device
     memset(&inputParameters, 0, sizeof(inputParameters));
@@ -140,3 +140,12 @@ std::vector<float> pa::getAudioBufferLeft(){
 std::vector<float> pa::getAudioBufferRight(){
     return audioBufferRight;
 }
+
+float pa::calculateCoefficients() {
+    float RC = 1 / cutoff * 2 * M_PI;
+    float dt = 1 / SAMPLE_RATE;
+
+    return dt / (RC + dt);
+}
+
+void pa::lowpassFilter(){}
