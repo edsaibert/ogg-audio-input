@@ -60,11 +60,15 @@ void gl::setVertices(std::vector<gl::complex> audioBuffer){
         }
     }
 
-    for (size_t i = 0; i < audioBuffer.size(); i++){
-        vertices[i*2] = ((float) i / audioBuffer.size()) * 4 - 1 ; // Necessário que a coordenada x corresponda com o tamanho da janela (-1 a 1)
-        vertices[(i*2)+1] = (std::abs(audioBuffer[i]) / maxMagnitude) - 0.5f; // Normaliza a amplitude para o intervalo [0, 1]
+        size_t n = audioBuffer.size();
+        for (size_t i = 0; i < n; i++){
+            float frequency = (i * SAMPLE_RATE) / n;  // i agora corresponde a frequencias
+            float logFrequency = std::log10(frequency + 1);  // escola logarítmica
+            float normalizedFrequency = (logFrequency - std::log10(20)) / (std::log10(20000) - std::log10(20));  // Normaliza entre 20 Hz e 20 kHz
 
-    }
+            vertices[i * 2] = normalizedFrequency * 2 - 1;  // X coordinate entre [-1, 1]
+            vertices[i * 2 + 1] = (std::abs(audioBuffer[i]) / maxMagnitude) - 0.5f;  // Y coordinate entre [0, 1]
+        }
 }
 
 
