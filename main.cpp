@@ -4,6 +4,7 @@
 // -------------------- Own --------------------
 #include "opengl/opengl.h"     // OpenGL, responsável pela criação de objetos e funções do OpenGL
 #include "audio/audio.h"        // Audio, responsável pela captura e reprodução de áudio
+#include "yin/yin.h"
 // #include "shaders/shader.h"     // Shader, responsável pela criação de shaders
 
 using namespace std;
@@ -17,6 +18,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 int main(int argc, char* argv[]) {
     gl gl(FRAMES_PER_BUFFER); // Cria um objeto da classe OpenGL
     pa pa(FRAMES_PER_BUFFER); // Cria um objeto da classe PortAudio e define o tamanho do buffer de áudio
+    yin yin(FRAMES_PER_BUFFER); // Cria um objeto da classe YIN
 
     pa.portAudioInicialize();  // Inicializa o PortAudio
     pa.getDevices();           // Mostra os dispositivos de áudio disponíveis
@@ -56,6 +58,7 @@ int main(int argc, char* argv[]) {
         std::vector<std::complex<float>> audioBufferLeft = pa.getAudioBufferLeft(); // Obtém o buffer de áudio do canal esquerdo
         pa.FFT(audioBufferLeft, false); // Aplica a transformada rápida de Fourier
         // pa.normalizeFFT(audioBufferLeft); // Normaliza a transformada rápida de Fourier
+        yin.getPitch(audioBufferLeft);
 
         gl.setVertices(audioBufferLeft);
         gl.draw(); // Desenha os vértices

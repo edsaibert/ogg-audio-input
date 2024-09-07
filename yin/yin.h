@@ -12,12 +12,13 @@ class yin {
     public:
         using complex = std::complex<float>; // definição de tipo para números complexos
         std::size_t maxTau = SAMPLE_RATE/2;
+        float yinThreshold = 100.0f;
 
         std::vector<complex> yinBuffer; // definição do buffer
 
         yin(std::size_t bufferSize); // construtor
 
-        float getPitch(); // função que irá calcular o pitch conforme o buffer de áudio passado 
+        float getPitch(std::vector<complex> audioBuffer); // função que irá calcular o pitch conforme o buffer de áudio passado 
     
     private:
         /*  Calcula o quadrado de diferença com uma versão deslocada (shifted) do sinal */
@@ -29,13 +30,14 @@ class yin {
         /*  Procura os valores que estão acima do limite (threshold) estabelecido 
             e retorna o deslocamento (shift) com melhor aproximação
         */
-        long int calculateAbsoluteThreshold();
+        std::size_t calculateAbsoluteThreshold();
 
         /*  Muitas vezes o período não é um múltiplo do período de amostragem.
             Nesse caso é necessário calcular a interpolação a fim de conseguir
             um número não inteiro que melhor represente o deslocamento (shift) do sinal
         */
-        float calculateParabolicInterpolation(); 
+        float calculateParabolicInterpolation(std::size_t calculatedTau); 
+
 };
 
 #endif
