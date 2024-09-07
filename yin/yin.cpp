@@ -1,23 +1,31 @@
 #include "yin.h"
 
-yin::yin(size_t bufferSize) : yinBuffer(bufferSize, 0){}
+yin::yin(std::size_t bufferSize) : yinBuffer(bufferSize, 0){}
 
-void yin::calculateDifference(size_t maxTau, std::vector<complex> audioBuffer){
-    size_t T = audioBuffer.size();        
+void yin::calculateDifference(std::vector<complex> audioBuffer){
 
-    for (size_t tau = 1; tau < maxTau; tau++){
-        float sum = 0.0f;
+    for (std::size_t tau = 1; tau < maxTau; tau++){
+        complex sum = 0.0f;
 
         // autocorrelation
-        for (size_t i = 0; i + tau < T; i++){
-            float diff = audioBuffer[i] - audioBuffer[i+tau];
+        for (std::size_t i = 0; i + tau < audioBuffer.size(); i++){
+            complex diff = audioBuffer[i] - audioBuffer[i+tau];
             sum += diff * diff;
         }
         yinBuffer[tau] = sum;
     }
 }
 
-void yin::calculateCumulativeMeanNormalizedDifference(){};
+void yin::calculateCumulativeMeanNormalizedDifference(){
+    complex sum = 0.0f;
+    yinBuffer[0] = 1;
+
+    for (std::size_t tau = 1; tau < maxTau; tau++){
+        sum += yinBuffer[tau];
+        yinBuffer[tau] *= (complex) tau/sum;
+    }
+
+};
 
 long int yin::calculateAbsoluteThreshold(){};
 

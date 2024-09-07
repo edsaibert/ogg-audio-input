@@ -11,16 +11,17 @@
 class yin {
     public:
         using complex = std::complex<float>; // definição de tipo para números complexos
+        std::size_t maxTau = SAMPLE_RATE/2;
 
         std::vector<complex> yinBuffer; // definição do buffer
 
-        yin(size_t bufferSize); // construtor
+        yin(std::size_t bufferSize); // construtor
 
         float getPitch(); // função que irá calcular o pitch conforme o buffer de áudio passado 
     
     private:
         /*  Calcula o quadrado de diferença com uma versão deslocada (shifted) do sinal */
-        void calculateDifference(size_t maxTau, std::vector<complex> audioBuffer); 
+        void calculateDifference(std::vector<complex> audioBuffer); 
 
         /*  Calcula a média da diferença calculada no passo anterior e a normaliza */
         void calculateCumulativeMeanNormalizedDifference();
