@@ -14,27 +14,27 @@ class yin {
 
         std::vector<complex> yinBuffer; // definição do buffer
 
-        yin(size_t bufferSize, std::vector<complex> audioBuffer); // construtor
+        yin(size_t bufferSize); // construtor
 
         float getPitch(); // função que irá calcular o pitch conforme o buffer de áudio passado 
     
     private:
         /*  Calcula o quadrado de diferença com uma versão deslocada (shifted) do sinal */
-        void calculateDifference(); 
+        void calculateDifference(size_t maxTau, std::vector<complex> audioBuffer); 
 
         /*  Calcula a média da diferença calculada no passo anterior e a normaliza */
-        void cumulativeMeanNormalizedDifference();
+        void calculateCumulativeMeanNormalizedDifference();
 
         /*  Procura os valores que estão acima do limite (threshold) estabelecido 
             e retorna o deslocamento (shift) com melhor aproximação
         */
-        long int absoluteThreshold();
+        long int calculateAbsoluteThreshold();
 
         /*  Muitas vezes o período não é um múltiplo do período de amostragem.
             Nesse caso é necessário calcular a interpolação a fim de conseguir
             um número não inteiro que melhor represente o deslocamento (shift) do sinal
         */
-        float parabolicInterpolation(); 
+        float calculateParabolicInterpolation(); 
 };
 
 #endif
