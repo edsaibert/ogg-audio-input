@@ -116,8 +116,8 @@ int gl::compileShaders() {
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);     // Cria um objeto -> vertex shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER); // Cria um objeto -> fragment shader
 
-    std::string vertexShaderStr = loadShaderSource("./vertexShader.vert");
-    std::string fragmentShaderStr = loadShaderSource("./fragmentShader.frag");
+    std::string vertexShaderStr = loadShaderSource("./opengl/vertexShader.vert");
+    std::string fragmentShaderStr = loadShaderSource("./opengl/fragmentShader.frag");
 
     std::cout << "vertex shader: " << vertexShaderStr << "fragment shader: " << fragmentShaderStr << std::endl; 
     const char* VShaderConst = vertexShaderStr.c_str();
@@ -165,6 +165,7 @@ int gl::compileShaders() {
     glDeleteShader(vertexShader); 
     glDeleteShader(fragmentShader);
 
+    std::cout << "Sucess on compiling shaders" << std::endl;
     return EXIT_SUCCESS; // Retorna o programa do shader
 }
 
