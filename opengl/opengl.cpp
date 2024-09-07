@@ -1,5 +1,21 @@
 #include "opengl.h"
 
+// Function to load shader source code from a file
+std::string loadShaderSource(const char* filePath) {
+    std::ifstream shaderFile;
+    shaderFile.open(filePath);
+    
+    if (!shaderFile.is_open()) {
+        std::cerr << "Failed to open shader file: " << filePath << std::endl;
+        return "";
+    }
+    
+    std::stringstream shaderStream;
+    shaderStream << shaderFile.rdbuf();
+    shaderFile.close();
+
+    return shaderStream.str();
+}
 /*  Código fonte dos shaders (to-do)   */
 const char *vertexShaderSource = "#version 460 core\n"
     "layout (location = 0) in vec3 aPos;\n"
@@ -100,9 +116,16 @@ int gl::compileShaders() {
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);     // Cria um objeto -> vertex shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER); // Cria um objeto -> fragment shader
 
+    std::string vertexShaderStr = loadShaderSource("./vertexShader.vert");
+    std::string fragmentShaderStr = loadShaderSource("./fragmentShader.frag");
+
+    std::cout << "vertex shader: " << vertexShaderStr << "fragment shader: " << fragmentShaderStr << std::endl; 
+    const char* VShaderConst = vertexShaderStr.c_str();
+    const char* FShaderConst = fragmentShaderStr.c_str();
+
     // Conecta o caminho dos shaders para seus objetos
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL); 
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glShaderSource(vertexShader, 1, &VShaderConst, NULL); 
+    glShaderSource(fragmentShader, 1, &FShaderConst, NULL);
 
     // Compila os shaders
     glCompileShader(vertexShader); 

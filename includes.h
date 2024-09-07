@@ -7,6 +7,7 @@
 #include <cstring>  // Biblioteca de strings
 #include <math.h>   // Biblioteca de funções matemáticas
 #include <complex>  // Biblioteca de números complexos
+#include <fstream>
 
 // ----------------- OGG Vorbis -----------------
 #include <ogg/ogg.h>
