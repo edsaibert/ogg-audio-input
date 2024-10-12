@@ -56,9 +56,9 @@ int main(int argc, char* argv[]) {
         glfwSwapBuffers(window); // Troca os buffers de cor
 
         std::vector<std::complex<float>> audioBufferLeft = pa.getAudioBufferLeft(); // Obtém o buffer de áudio do canal esquerdo
+        yin.getPitch(audioBufferLeft);
         pa.FFT(audioBufferLeft, false); // Aplica a transformada rápida de Fourier
         // pa.normalizeFFT(audioBufferLeft); // Normaliza a transformada rápida de Fourier
-        yin.getPitch(audioBufferLeft);
 
         gl.setVertices(audioBufferLeft);
         gl.draw(); // Desenha os vértices

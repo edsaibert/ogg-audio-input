@@ -11,8 +11,8 @@
 class yin {
     public:
         using complex = std::complex<float>; // definição de tipo para números complexos
-        std::size_t maxTau = SAMPLE_RATE/2;
-        float yinThreshold = 100.0f;
+        std::size_t maxTau = FRAMES_PER_BUFFER/2;
+        float yinThreshold = 0.9f;
 
         std::vector<complex> yinBuffer; // definição do buffer
 

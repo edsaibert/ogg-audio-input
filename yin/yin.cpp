@@ -3,6 +3,7 @@
 yin::yin(std::size_t bufferSize) : yinBuffer(bufferSize, 0){}
 
 void yin::calculateDifference(std::vector<complex> audioBuffer){
+    yinBuffer.resize(maxTau);
 
     for (std::size_t tau = 1; tau < maxTau; tau++){
         float sum = 0.0f;
@@ -18,11 +19,11 @@ void yin::calculateDifference(std::vector<complex> audioBuffer){
 
 void yin::calculateCumulativeMeanNormalizedDifference(){
     float sum = 0.0f;
-    yinBuffer[0] = 1;
+    yinBuffer[0] = 1.0f;
 
     for (std::size_t tau = 1; tau < maxTau; tau++){
         sum += yinBuffer[tau].real();
-        yinBuffer[tau] *= tau/sum;
+        yinBuffer[tau] = yinBuffer[tau].real() * tau / sum;
     }
 
 };
@@ -31,49 +32,49 @@ std::size_t yin::calculateAbsoluteThreshold(){
     std::size_t tau = 2;
     for (; tau < maxTau; tau++){
         if (yinBuffer[tau].real() < yinThreshold){
-            while (tau + 1 < maxTau && yinBuffer[tau + 1].real() < yinBuffer[tau].real()) 
+            while (tau + 1 < maxTau && (yinBuffer[tau + 1].real() < yinBuffer[tau].real())) {
                 tau++;
+            }
+            return tau;
         }
     }
-    if (tau == maxTau || yinBuffer[tau].real() >= yinThreshold)
-        tau = -1;
+    // if (tau == maxTau || yinBuffer[tau].real() >= yinThreshold)
+    //     tau = -1;
     
-    return tau;
+    return -1;
 };
 
-float yin::calculateParabolicInterpolation(std::size_t calculatedTau){
+float yin::calculateParabolicInterpolation(std::size_t calculatedTau) {
     int t0, t1;
     float chosenTau;
 
     if (calculatedTau < 1)
         t0 = calculatedTau;
-    else calculatedTau - 1;
+    else 
+        t0 = calculatedTau - 1;
 
     if (calculatedTau + 1 < maxTau)
         t1 = calculatedTau + 1;
-    else calculatedTau; 
+    else 
+        t1 = calculatedTau;
 
-    if (t0 == calculatedTau){
-        if (yinBuffer[calculatedTau].real() <= yinBuffer[calculatedTau].real())
-            chosenTau = calculatedTau;
-        else chosenTau = t1;
-    }
-    else if (t1 == calculatedTau){
-        if (yinBuffer[calculatedTau].real() <= yinBuffer[calculatedTau].real())
-            chosenTau = calculatedTau;
-        else chosenTau = t0;
-    }
-    else {
-        float dMinor = yinBuffer[t0].real(); 
+    // Parabolic interpolation
+    if (t0 == calculatedTau || t1 == calculatedTau) {
+        if (yinBuffer[t0].real() <= yinBuffer[t1].real())
+            chosenTau = t0;
+        else
+            chosenTau = t1;
+    } else {
+        float dMinor = yinBuffer[t0].real();
         float dMax = yinBuffer[t1].real();
         float d = yinBuffer[calculatedTau].real();
 
-        chosenTau = calculatedTau + ((dMinor - dMax) / 2*(dMinor - 2*d + dMax));
+        chosenTau = calculatedTau + ((dMinor - dMax) / (2 * (dMinor - 2 * d + dMax)));
     }
-    
+
     return chosenTau;
-     
 };
+
 
 float yin::getPitch(std::vector<complex> audioBuffer){
     float pitchHz = -1;
@@ -85,7 +86,7 @@ float yin::getPitch(std::vector<complex> audioBuffer){
     if (tau != -1){
         pitchHz = SAMPLE_RATE / yin::calculateParabolicInterpolation(tau); 
     }
-
+    std::cout << "picthHz: " << pitchHz << std::endl;
     return pitchHz;
 }
 

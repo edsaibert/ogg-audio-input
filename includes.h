@@ -23,6 +23,7 @@
 #include <GL/freeglut.h> // freeglut, que fornece funções para a criação de janelas e renderização de objetos 3D
 #include <glm/glm.hpp>   // GLM, que fornece funções matemáticas e vetoriais
 #include <GLFW/glfw3.h>  // GLFW, que permite a criação de janelas
+#include <GL/glu.h>
 
 #define SAMPLE_RATE 48000      //  taxa de amostragem
 #define FRAMES_PER_BUFFER 2048 // tamanho dos buffers de áudio e arestas
