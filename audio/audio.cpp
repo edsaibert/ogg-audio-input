@@ -44,7 +44,7 @@ void pa::checkError(PaError err) {
 }
 
 // Constructor
-pa::pa(size_t bufferSize) : audioBufferLeft(bufferSize, 0.0f) , audioBufferRight(bufferSize, 0.0f){
+pa::pa(std::size_t bufferSize) : audioBufferLeft(bufferSize, 0.0f) , audioBufferRight(bufferSize, 0.0f){
 
 }
 
@@ -133,22 +133,13 @@ void pa::getDevices() {
     outputParameters.suggestedLatency = Pa_GetDeviceInfo(device)->defaultLowInputLatency;
 }
 
-std::vector<pa::complex> pa::getAudioBufferLeft(){
-    return audioBufferLeft;
+std::vector<float> pa::getAudioBufferLeft(){
+    return complexToReal(audioBufferLeft);
 }
 
-std::vector<pa::complex> pa::getAudioBufferRight(){
-    return audioBufferRight;
+std::vector<float> pa::getAudioBufferRight(){
+    return complexToReal(audioBufferRight);
 }
-
-float pa::calculateCoefficients() {
-    float RC = 1 / cutoff * 2 * M_PI;
-    float dt = 1 / SAMPLE_RATE;
-
-    return dt / (RC + dt);
-}
-
-void pa::lowpassFilter(){}  // to-do
 
 void pa::FFT(std::vector<complex> &v, bool invert){
     int n = v.size();
@@ -181,7 +172,7 @@ void pa::FFT(std::vector<complex> &v, bool invert){
 void pa::normalizeFFT(std::vector<complex>& fftData) {
     // Find maximum magnitude
     float maxMagnitude = 0.0;
-    for (size_t i = 0; i < fftData.size(); ++i) {
+    for (std::size_t i = 0; i < fftData.size(); ++i) {
         float magnitude = std::abs(fftData[i]);
         if (magnitude > maxMagnitude) {
             maxMagnitude = magnitude;
@@ -190,8 +181,25 @@ void pa::normalizeFFT(std::vector<complex>& fftData) {
 
     // Normalize amplitudes to range [0, 1]
     if (maxMagnitude > 0.0) {
-        for (size_t i = 0; i < fftData.size(); ++i) {
+        for (std::size_t i = 0; i < fftData.size(); ++i) {
             fftData[i] = (fftData[i] / maxMagnitude) * 10.0f;
         }
     }
 }
+
+std::vector<float> pa::complexToReal(std::vector<complex> &v){
+    std::vector<float> real(v.size());
+    for (std::size_t i = 0; i < v.size(); i++){
+        real[i] = v[i].real();
+    }
+    return real;
+}
+
+float pa::calculateCoefficients() {
+    float RC = 1 / cutoff * 2 * M_PI;
+    float dt = 1 / SAMPLE_RATE;
+
+    return dt / (RC + dt);
+}
+
+void pa::lowpassFilter(){}  // to-do

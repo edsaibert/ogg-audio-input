@@ -55,9 +55,9 @@ int main(int argc, char* argv[]) {
     while (!glfwWindowShouldClose(window)){       // Enquanto a janela não for fechada e não for fim de arquivo
         glfwSwapBuffers(window); // Troca os buffers de cor
 
-        std::vector<std::complex<float>> audioBufferLeft = pa.getAudioBufferLeft(); // Obtém o buffer de áudio do canal esquerdo
+        std::vector<float> audioBufferLeft = pa.getAudioBufferLeft(); // Obtém o buffer de áudio do canal esquerdo
         yin.getPitch(audioBufferLeft);
-        pa.FFT(audioBufferLeft, false); // Aplica a transformada rápida de Fourier
+        // pa.FFT(audioBufferLeft, false); // Aplica a transformada rápida de Fourier
         // pa.normalizeFFT(audioBufferLeft); // Normaliza a transformada rápida de Fourier
 
         gl.setVertices(audioBufferLeft);

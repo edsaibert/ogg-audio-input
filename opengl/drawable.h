@@ -6,18 +6,29 @@
 */
 
 #include "../includes.h"
+#include "./shader.h"
+#include "./tbo.h"
 
 class Drawable
 {
 public:
-    using complex = std::complex<float>; // definição de tipo para números complexos
-    std::vector<complex> buffer;
+    // using complex = std::complex<float>; // definição de tipo para números complexos
 
     // Construtor
-    Drawable(size_t bufferSize, GLuint shaderProgram) : bufferSize(bufferSize), shaderProgram(shaderProgram)
+    Drawable(
+        std::size_t bufferSize, 
+        GLuint shaderProgram, 
+        std::vector<float> buffer) 
+        : bufferSize(bufferSize), shaderProgram(shaderProgram), buffer(buffer) {
+
+        tbo = new TextureBuffer(bufferSize, buffer);
+        shader = new Shader();
+    }
+
+    ~Drawable()
     {
-        verticesSize = bufferSize * 2;
-        vertices = new GLfloat[verticesSize];
+        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &VAO);
     }
 
     // Método virtual que desenha os vértices
@@ -49,22 +60,27 @@ protected:
         glEnableVertexAttribArray(0);                                                    // Habilita o buffer
     };
 
-    virtual void updateShaderProgram() {
+    virtual void updateShaderProgram()
+    {
         glUseProgram(shaderProgram);
     };
 
     virtual void setVertices() = 0;
     virtual void performDraw() = 0;
 
-    virtual void unbindBuffers() {
+    virtual void unbindBuffers()
+    {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     };
 
     GLuint VAO, VBO, shaderProgram;
-    const size_t samplesPerChannel = SAMPLE_RATE;
-    size_t bufferSize, verticesSize;
-    GLfloat *vertices;
+    const std::size_t samplesPerChannel = SAMPLE_RATE;
+    std::size_t bufferSize, verticesSize;
+    std::vector<float> buffer;
+
+    TextureBuffer *tbo;
+    Shader *shader;
 };
 
 #endif

@@ -44,7 +44,7 @@ int gl::checkGLError() {
 /*
     Construtor da classe OpenGL
 */
-gl::gl(size_t bufferSize) : bufferSize(bufferSize) {
+gl::gl(std::size_t bufferSize) : bufferSize(bufferSize) {
     /*
         O vetor de vértices necessita ter um tamanho duplicado do buffer de áudio.
         Isso ocorre pois cada vértice é composto por duas coordenadas (x, y). 
@@ -57,7 +57,7 @@ gl::gl(size_t bufferSize) : bufferSize(bufferSize) {
     Função que define os vértices a serem desenhados na tela
     O parâmetro é um vetor de floats, que contém o buffer de áudio
 */
-void gl::setVertices(std::vector<gl::complex> audioBuffer){
+void gl::setVertices(std::vector<float> audioBuffer){
     // Caso o tamanho do buffer de áudio seja diferente do tamanho do vetor de vértices
     // if(audioBuffer.size() * 2 != verticesSize) {
     //     std::cout << "Size mismatch between audio buffer and vertex data" << std::endl;
@@ -76,8 +76,8 @@ void gl::setVertices(std::vector<gl::complex> audioBuffer){
         }
     }
 
-        size_t n = audioBuffer.size();
-        for (size_t i = 0; i < n; i++){
+        std::size_t n = audioBuffer.size();
+        for (std::size_t i = 0; i < n; i++){
             float frequency = (i * SAMPLE_RATE) / n;  // i agora corresponde a frequencias
             float logFrequency = std::log10(frequency + 1);  // escola logarítmica
             float normalizedFrequency = (logFrequency - std::log10(20)) / (std::log10(20000) - std::log10(20));  // Normaliza entre 20 Hz e 20 kHz

@@ -8,6 +8,7 @@
 #include <math.h>   // Biblioteca de funções matemáticas
 #include <complex>  // Biblioteca de números complexos
 #include <fstream>
+#include <cstddef> 
 
 // ----------------- OGG Vorbis -----------------
 #include <ogg/ogg.h>

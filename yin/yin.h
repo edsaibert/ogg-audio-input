@@ -10,19 +10,19 @@
 
 class yin {
     public:
-        using complex = std::complex<float>; // definição de tipo para números complexos
+        // using complex = std::complex<float>; // definição de tipo para números complexos
         std::size_t maxTau = FRAMES_PER_BUFFER/2;
         float yinThreshold = 0.9f;
 
-        std::vector<complex> yinBuffer; // definição do buffer
+        std::vector<float> yinBuffer; // definição do buffer
 
         yin(std::size_t bufferSize); // construtor
 
-        float getPitch(std::vector<complex> audioBuffer); // função que irá calcular o pitch conforme o buffer de áudio passado 
+        float getPitch(std::vector<float> audioBuffer); // função que irá calcular o pitch conforme o buffer de áudio passado 
     
     private:
         /*  Calcula o quadrado de diferença com uma versão deslocada (shifted) do sinal */
-        void calculateDifference(std::vector<complex> audioBuffer); 
+        void calculateDifference(std::vector<float> audioBuffer); 
 
         /*  Calcula a média da diferença calculada no passo anterior e a normaliza */
         void calculateCumulativeMeanNormalizedDifference();

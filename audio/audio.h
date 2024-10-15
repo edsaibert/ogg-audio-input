@@ -12,7 +12,7 @@ public:
     std::vector<complex> audioBufferLeft;  // buffer de áudio para o canal esquerdo
     std::vector<complex> audioBufferRight; // buffer de áudio para o canal direito
 
-    pa(size_t bufferSize); // construtor
+    pa(std::size_t bufferSize); // construtor
 
     void portAudioInicialize(); // inicializa o PortAudio
     void portAudioTerminate();  // termina o PortAudio
@@ -24,14 +24,15 @@ public:
 
     void getDevices(); // obtém os dispositivos de áudio
 
-    std::vector<complex> getAudioBufferLeft();  // obtém o buffer de áudio do canal esquerdo
-    std::vector<complex> getAudioBufferRight(); // obtém o buffer de áudio do canal direito
+    std::vector<float> getAudioBufferLeft();  // obtém o buffer de áudio do canal esquerdo
+    std::vector<float> getAudioBufferRight(); // obtém o buffer de áudio do canal direito
 
     float calculateCoefficients(); // calcula os coeficientes do filtro
     void lowpassFilter();          // aplica o lowpass filter
 
     void FFT(std::vector<complex> &v, bool invert); // aplica a transformada rápida de Fourier
     void normalizeFFT(std::vector<complex> &fftData); // normaliza a transformada rápida de Fourier
+    std::vector<float> complexToReal(std::vector<complex> &v); // converte números complexos para reais
 
 private:
     int numDevices;
