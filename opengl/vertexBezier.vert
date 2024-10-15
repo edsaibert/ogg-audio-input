@@ -22,5 +22,6 @@ vec3 quadraticBezier(float t, vec3 p0, vec3 p1, vec3 p2){
 }
 
 void main() {
+    
 }
 

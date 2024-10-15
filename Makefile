@@ -2,7 +2,7 @@ portAudio_inc = ./lib/portaudio/include
 portAudio_dep = -lrt -lasound -ljack -pthread 
 portAudio_lib = ./lib/portaudio/lib/.libs/libportaudio.a
 
-CC = gcc
+CC = g++
 INCLUDES = -I$(portAudio_inc)
 LIBRARIES = -L$(glfw_lib) $(portAudio_lib)
 SHADERS = ./shaders
@@ -24,7 +24,7 @@ CFLAGS = -Wall -g $(INCLUDES)
 LDFLAGS = $(LIBRARIES) -lglfw -lglm -lm -lglut -lstdc++  -lvorbisfile -L /usr/lib -lGL -lGLU $(portAudio_dep) -lportaudio
 
 TARGET = main
-cpp_files = main.cpp $(OPENGL)/opengl.cpp $(OPENGL)/bezier.cpp $(AUDIO)/audio.cpp $(YIN)/yin.cpp
+cpp_files = main.cpp $(OPENGL)/opengl.cpp $(OPENGL)/bezier.cpp $(OPENGL)/shader.cpp $(AUDIO)/audio.cpp $(YIN)/yin.cpp
 objects = $(cpp_files:.cpp=.o) glad.o
 
 install:

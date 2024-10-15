@@ -16,13 +16,10 @@ public:
 
     // Construtor
     Drawable(
-        std::size_t bufferSize, 
-        GLuint shaderProgram, 
-        std::vector<float> buffer) 
-        : bufferSize(bufferSize), shaderProgram(shaderProgram), buffer(buffer) {
-
-        tbo = new TextureBuffer(bufferSize, buffer);
+        std::size_t bufferSize)
+        : bufferSize(bufferSize) {
         shader = new Shader();
+        // vertices = new GLfloat[bufferSize * 2];
     }
 
     ~Drawable()
@@ -32,14 +29,19 @@ public:
     }
 
     // Método virtual que desenha os vértices
-    virtual void draw()
+    virtual void draw(std::vector<float> buffer)
     {
         clearScreen();
         bindBuffers();
-        setVertices();
+        setVertices(buffer);
         updateShaderProgram();
         performDraw();
         unbindBuffers();
+    }
+
+    virtual void loadShader() = 0;
+    virtual void bindTextureBuffer(std::vector<float> buffer) {
+        tbo = new TextureBuffer(bufferSize, buffer);
     }
 
 protected:
@@ -62,10 +64,10 @@ protected:
 
     virtual void updateShaderProgram()
     {
-        glUseProgram(shaderProgram);
+        glUseProgram(shader->shaderProgram);
     };
 
-    virtual void setVertices() = 0;
+    virtual void setVertices(std::vector<float> buffer) = 0;
     virtual void performDraw() = 0;
 
     virtual void unbindBuffers()
@@ -74,10 +76,11 @@ protected:
         glBindVertexArray(0);
     };
 
-    GLuint VAO, VBO, shaderProgram;
+    GLuint VAO, VBO;
+    GLfloat *vertices;
     const std::size_t samplesPerChannel = SAMPLE_RATE;
     std::size_t bufferSize, verticesSize;
-    std::vector<float> buffer;
+    // std::vector<float> buffer;
 
     TextureBuffer *tbo;
     Shader *shader;

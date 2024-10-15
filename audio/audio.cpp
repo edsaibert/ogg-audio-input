@@ -115,22 +115,26 @@ void pa::getDevices() {
         std::cout << "  Default Sample Rate: " << deviceInfo->defaultSampleRate << std::endl;
     }
 
-    int device = 7;     // to-do: choose a device
+    int inputDevice, outputDevice;     // to-do: choose a device
+    std::cout << "Escolha um input: " << std::endl;
+    scanf("%d", &inputDevice);
+    std::cout << "Escolha um output: " << std::endl;
+    scanf("%d", &outputDevice);
 
     // Set input and output parameters of the chosen device
     memset(&inputParameters, 0, sizeof(inputParameters));
     inputParameters.channelCount = 2; // stereo (change if needed)
-    inputParameters.device = device;
+    inputParameters.device = inputDevice;
     inputParameters.hostApiSpecificStreamInfo = NULL; 
     inputParameters.sampleFormat = paFloat32; // 32-bit floating point (change if needed)
-    inputParameters.suggestedLatency = Pa_GetDeviceInfo(device)->defaultLowInputLatency;
+    inputParameters.suggestedLatency = Pa_GetDeviceInfo(inputDevice)->defaultLowInputLatency;
 
     memset(&outputParameters, 0, sizeof(outputParameters));
     outputParameters.channelCount = 2; // stereo (change if needed)
-    outputParameters.device = device;
+    outputParameters.device = outputDevice;
     outputParameters.hostApiSpecificStreamInfo = NULL; 
     outputParameters.sampleFormat = paFloat32; // 32-bit floating point (change if needed)
-    outputParameters.suggestedLatency = Pa_GetDeviceInfo(device)->defaultLowInputLatency;
+    outputParameters.suggestedLatency = Pa_GetDeviceInfo(outputDevice)->defaultLowInputLatency;
 }
 
 std::vector<float> pa::getAudioBufferLeft(){

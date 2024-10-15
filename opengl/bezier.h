@@ -8,20 +8,26 @@
 #include "../includes.h"
 #include "drawable.h"
 
-
-class Bezier : public Drawable {
+class Bezier : public Drawable
+{
 public:
-    Bezier(std::size_t bufferSize, GLuint shaderProgram, std::vector<float> buffer) : Drawable(bufferSize, shaderProgram, buffer) {
-        vertices = new GLfloat[bufferSize * 2];
-    } 
+    Bezier(std::size_t bufferSize) : Drawable(bufferSize) {}
 
     ~Bezier() {}
 
+    void loadShader() override
+    {
+        shader->vertexShaderPath = strdup("vertexBezier.vert");
+        shader->fragmentShaderPath = strdup("fragmentShader.frag");
+        shader->compileShaders();
+    };
+
 protected:
-    void setVertices() override;
+    void setVertices(std::vector<float> buffer) override;
     void performDraw() override;
 
-    GLfloat* vertices;
+
+    // GLfloat *vertices;
 };
 
-#endif 
+#endif

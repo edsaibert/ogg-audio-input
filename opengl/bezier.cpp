@@ -1,6 +1,6 @@
 #include "bezier.h"
 
-void Bezier::setVertices()
+void Bezier::setVertices(std::vector<float> buffer)
 {
     float maxMagnitude = 0.0;
 
@@ -25,7 +25,7 @@ void Bezier::setVertices()
         float normalizedFrequency = (logFrequency - std::log10(20)) / (std::log10(20000) - std::log10(20)); // Normaliza entre 20 Hz e 20 kHz
 
         vertices[i * 2] = normalizedFrequency * 2 - 1;                     // X coordinate entre [-1, 1]
-        vertices[i * 2 + 1] = (std::abs(buffer[i]) / maxMagnitude) - 0.5f; // Y coordinate entre [0, 1]
+        vertices[i * 2 + 1] = (std::abs(vertices[i]) / maxMagnitude) - 0.5f; // Y coordinate entre [0, 1]
     }
 }
 
@@ -34,7 +34,5 @@ void Bezier::performDraw()
     // draw the curve
     // will be necessary to create a shader for this
 
-    shader->vertexShaderPath = "vertexBezier.vert";
-    shader->fragmentShaderPath = "fragmentShader.frag";
-    shader->compileShaders();
+    glDrawArrays(GL_LINE_STRIP, 0, bufferSize / 2); // Desenha os v
 }
