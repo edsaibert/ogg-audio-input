@@ -11,14 +11,14 @@
 class Bezier : public Drawable
 {
 public:
-    Bezier(std::size_t bufferSize) : Drawable(bufferSize) {}
+    Bezier(std::size_t bufferSize, Shader *shader) : Drawable(bufferSize, shader) {}
 
     ~Bezier() {}
 
     void loadShader() override
     {
-        shader->vertexShaderPath = strdup("vertexBezier.vert");
-        shader->fragmentShaderPath = strdup("fragmentShader.frag");
+        shader->vertexShaderPath = "./opengl/vertexBezier.vert";
+        shader->fragmentShaderPath = "./opengl/fragmentShader.frag";
         shader->compileShaders();
     };
 

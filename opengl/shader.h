@@ -19,6 +19,6 @@ public:
     int compileShaders();
 
     GLuint shaderProgram;
-    char* vertexShaderPath; // Caminho do vertex shader
-    char* fragmentShaderPath; // Caminho do fragment shader
+    const char* vertexShaderPath; // Caminho do vertex shader
+    const char* fragmentShaderPath; // Caminho do fragment shader
 };

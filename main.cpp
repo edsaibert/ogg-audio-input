@@ -18,7 +18,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int main(int argc, char* argv[]) {
     // gl gl(FRAMES_PER_BUFFER); // Cria um objeto da classe OpenGL
-    Bezier bezier(FRAMES_PER_BUFFER);
+    Shader* shader = new Shader();   
+    Bezier bezier(FRAMES_PER_BUFFER, shader);
     pa pa(FRAMES_PER_BUFFER); // Cria um objeto da classe PortAudio e define o tamanho do buffer de áudio
     yin yin(FRAMES_PER_BUFFER); // Cria um objeto da classe YIN
 
@@ -33,7 +34,6 @@ int main(int argc, char* argv[]) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Define o perfil do OpenGL (CORE)
 
-    bezier.loadShader(); // Carrega os shaders
     // sucess = openAudioFile(ogg, &stream);
 
     // Cria uma janela 800x800 pixels, com o título "OggVorbis.Player()"
@@ -55,6 +55,7 @@ int main(int argc, char* argv[]) {
     // gl.inicializeObjects(); // Inicia
 
     // int readStatus = readAudioChunk(ogg, &stream, vertices, verticesSize); // Read initial chunk
+    bezier.loadShader(); // Carrega os shaders
 
     while (!glfwWindowShouldClose(window)){       // Enquanto a janela não for fechada e não for fim de arquivo
         glfwSwapBuffers(window); // Troca os buffers de cor

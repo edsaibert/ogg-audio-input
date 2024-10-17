@@ -16,9 +16,8 @@ public:
 
     // Construtor
     Drawable(
-        std::size_t bufferSize)
-        : bufferSize(bufferSize) {
-        shader = new Shader();
+        std::size_t bufferSize, Shader *shader)
+        : bufferSize(bufferSize), shader(shader) {
         // vertices = new GLfloat[bufferSize * 2];
     }
 

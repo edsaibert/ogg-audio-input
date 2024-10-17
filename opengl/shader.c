@@ -3,6 +3,7 @@
 std::string Shader::loadShaderSource(const char *filePath)
 {
     std::ifstream shaderFile;
+
     shaderFile.open(filePath);
 
     if (!shaderFile.is_open())
@@ -26,7 +27,6 @@ int Shader::compileShaders()
     std::string vertexShaderStr = loadShaderSource(vertexShaderPath);
     std::string fragmentShaderStr = loadShaderSource(fragmentShaderPath);
 
-    std::cout << "vertex shader: " << vertexShaderStr << "fragment shader: " << fragmentShaderStr << std::endl;
     const char *VShaderConst = vertexShaderStr.c_str();
     const char *FShaderConst = fragmentShaderStr.c_str();
 
